@@ -1,4 +1,4 @@
-package com.example.smallbusiness.ui.view;
+package com.example.smallbusiness;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

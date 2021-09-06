@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.view.MainActivity">
+    android:layout_height="match_parent">
 
     <FrameLayout
         android:layout_above="@id/nav_main"
@@ -16,9 +15,6 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_main"
         app:menu="@menu/nav_item"
-        android:background="@color/background_bottom_navigationbar"
-        app:itemIconTint="@drawable/bottom_navigation_selector"
-        app:itemTextColor="@drawable/bottom_navigation_selector"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"/>
@@ -32,12 +28,12 @@
         android:layout_height="wrap_content">
         <ImageView
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/ic_signal_wifi_off_black_24dp"
+            android:src="@drawable/ic_shopping_cart_white_24dp"
             android:layout_width="100dp"
             android:layout_height="100dp" />
         <TextView
             android:layout_marginTop="8dp"
-            android:textColor="@color/primaryTextColor"
+            android:textColor="@color/black"
             android:textSize="20sp"
             android:text="No internet connection!"
             android:layout_width="wrap_content"

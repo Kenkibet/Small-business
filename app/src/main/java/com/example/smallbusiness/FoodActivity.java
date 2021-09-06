@@ -1,4 +1,4 @@
-package com.example.smallbusiness.ui.view;
+package com.example.smallbusiness;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,12 +19,10 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 
 import com.example.smallbusiness.R;
-import com.example.smallbusiness.adapter.FoodAdapter;
-import com.example.smallbusiness.common.dialog.ProgressLoading;
-import com.example.smallbusiness.model.eventbus.FoodListEvent;
-import com.example.smallbusiness.retrofit.IMyRestaurantAPI;
-import com.example.smallbusiness.retrofit.RetrofitClient;
-import com.example.smallbusiness.utils.Utils;
+import com.example.smallbusiness.adapters.FoodAdapter;
+import com.example.smallbusiness.api.APIConstants;
+import com.example.smallbusiness.api.IRestaurantAPI;
+import com.example.smallbusiness.api.RetrofitClient;
 import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
@@ -37,8 +35,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class ListFood extends AppCompatActivity {
-    IMyRestaurantAPI myRestaurantAPI;
+public class FoodActivity extends AppCompatActivity {
+    IRestaurantAPI myRestaurantAPI;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     FoodAdapter foodAdapter, searchAdapter;
     @BindView(R.id.toolbar)
@@ -77,7 +75,7 @@ public class ListFood extends AppCompatActivity {
     }
 
     private void init() {
-        myRestaurantAPI = RetrofitClient.getInstance(Utils.API_ENDPOINT).create(IMyRestaurantAPI.class);
+        myRestaurantAPI = RetrofitClient.getInstance(APIConstants.API_ENDPOINT).create(IRestaurantAPI.class);
     }
 
     @Override
@@ -119,9 +117,8 @@ public class ListFood extends AppCompatActivity {
     }
 
     private void startSearchFood(String query) {
-        ProgressLoading.show(this);
         compositeDisposable.add(
-                myRestaurantAPI.getFoodByName(Utils.API_KEY, query, "Bearer " + Utils.currentUser.getToken())
+                myRestaurantAPI.getFoodByName(APIConstants.API_KEY, query, "Bearer " + APIConstants.API_ENDPOINT)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(foodModel -> {
@@ -131,10 +128,8 @@ public class ListFood extends AppCompatActivity {
                                     } else {
                                         Log.d("SEARCH FOOD", foodModel.getMessage());
                                     }
-                                    ProgressLoading.dismiss();
                                 },
                                 throwable -> {
-                                    ProgressLoading.dismiss();
                                 })
         );
     }
@@ -162,36 +157,5 @@ public class ListFood extends AppCompatActivity {
         super.onStop();
     }
 
-    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void loadFoodsByCategory(FoodListEvent event) {
-        ProgressLoading.show(this);
-        if(event.isSuccess()) {
-            Picasso.get().load(event.getCategory().getImage()).into(imgRestaurant);
-            toolbar.setTitle(event.getCategory().getName());
-            setSupportActionBar(toolbar);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-            compositeDisposable.add(
-                    myRestaurantAPI.getFoodByMenuId(Utils.API_KEY, event.getCategory().getID(), "Bearer " + Utils.currentUser.getToken())
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(foodModel -> {
-                                        if(foodModel.isSuccess()) {
-                                            Log.d("AAA", "vafo day" + foodModel.getResult().size());
-                                            foodAdapter = new FoodAdapter(this, foodModel.getResult());
-                                            recyclerFoods.setAdapter(foodAdapter);
-                                        } else {
-                                            Log.d("GET FOOD", foodModel.getMessage());
-                                        }
-                                    },
-                                    throwable -> {
-
-                                    })
-            );
-        } else {
-
-        }
-        ProgressLoading.dismiss();
-    }
 
 }
