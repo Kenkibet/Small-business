@@ -1,16 +1,10 @@
-package com.example.foodordering.retrofit;
+package com.example.smallbusiness.api;
 
-import com.example.foodordering.model.addOn.AddOnModel;
-import com.example.foodordering.model.favorite.FavoriteIdModel;
-import com.example.foodordering.model.favorite.FavoriteModel;
 import com.example.foodordering.model.food.FoodModel;
 import com.example.foodordering.model.menu.MenuModel;
 import com.example.foodordering.model.order.OrderCreateModel;
 import com.example.foodordering.model.order.OrderModel;
 import com.example.foodordering.model.restaurant.RestaurantModel;
-import com.example.foodordering.model.size.SizeModel;
-import com.example.foodordering.model.user.UpdateUserModel;
-import com.example.foodordering.model.user.UserModel;
 
 import io.reactivex.Observable;
 import retrofit2.http.DELETE;
@@ -21,7 +15,7 @@ import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
-public interface IMyRestaurantAPI {
+public interface IRestaurantAPI {
 
     // USER
     @GET("user")

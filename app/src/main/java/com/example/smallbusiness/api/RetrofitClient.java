@@ -1,4 +1,4 @@
-package com.example.foodordering.retrofit;
+package com.example.foodordering.api;
 
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
